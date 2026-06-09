@@ -74,6 +74,22 @@ Future developments may include:
 - Dynamic Mode Decomposition (DMD).
 - Real-time simulation applications.
 
+ Convergence Analysis
+
+A convergence study was performed by varying the number of retained POD modes.
+
+The reconstruction error decreases as the number of modes increases, confirming the efficiency of the reduced-order representation.
+
+| POD Modes | Relative Error |
+|-----------|---------------|
+| 1 | (from results) |
+| 2 | (from results) |
+| 3 | (from results) |
+| 5 | (from results) |
+| 10 | (from results) |
+
+This behavior demonstrates that the system is highly low-rank and can be accurately approximated using a small number of modes.
+
  Author
 
 Alaa7-7

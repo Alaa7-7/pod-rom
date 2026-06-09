@@ -34,9 +34,28 @@ error = np.linalg.norm(X - X_rec) / np.linalg.norm(X)
 
 print("Relative reconstruction error:", error)
 
+print("\nConvergence Study")
+print("-----------------")
+
+for k in [1, 2, 3, 5, 10]:
+    if k <= len(S):
+
+        X_rec_k = reconstruct(U, S, VT, k, X_mean)
+
+        error_k = np.linalg.norm(X - X_rec_k) / np.linalg.norm(X)
+
+        print(f"Modes = {k:2d} | Error = {error_k:.6f}")
+
+
 # ==================================================
 # 7. Visual comparison
 # ==================================================
 
 snapshot_id = 10
 
+import numpy as np
+
+np.save("X_original.npy", X)
+np.save("X_reconstructed.npy", X_rec)
+
+print("Data saved: X_original.npy and X_reconstructed.npy")
