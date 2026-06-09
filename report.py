@@ -1,53 +1,54 @@
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
 from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib import colors
+import numpy as np
 
-# Create PDF file
-doc = SimpleDocTemplate("POD_Report.pdf")
+# Load data
+energy = np.load("energy_modes.npy")
+cum_energy = np.load("energy_cumulative.npy")
 
+doc = SimpleDocTemplate("POD_ROM_Paper.pdf")
 styles = getSampleStyleSheet()
 content = []
 
 # Title
-content.append(Paragraph("POD Reduced Order Model (ROM) for 2D Heat Equation", styles["Title"]))
+content.append(Paragraph("Reduced Order Modeling (POD-ROM) for 2D Heat Equation", styles["Title"]))
 content.append(Spacer(1, 12))
 
 # Abstract
-abstract = """
-This project implements a Reduced Order Model (ROM) using Proper Orthogonal Decomposition (POD)
-applied to a 2D heat diffusion system. The goal is to reduce computational complexity while
-preserving dominant dynamics.
-"""
-content.append(Paragraph("Abstract", styles["Heading2"]))
-content.append(Paragraph(abstract, styles["BodyText"]))
+content.append(Paragraph(
+"This project presents a POD-based reduced order model for the 2D heat equation using SVD.",
+styles["Normal"]))
 content.append(Spacer(1, 12))
 
-# Methodology
-method = """
-The system is decomposed using Singular Value Decomposition (SVD) into orthogonal modes.
-A reduced basis is constructed by selecting the most energetic modes representing 99% of the system energy.
-"""
-content.append(Paragraph("Methodology", styles["Heading2"]))
-content.append(Paragraph(method, styles["BodyText"]))
+# Governing equation (ASCII safe)
+content.append(Paragraph(
+"Governing Equation: dT/dt = alpha * (d2T/dx2 + d2T/dy2)",
+styles["Normal"]))
 content.append(Spacer(1, 12))
 
-# Results
-results = """
-The model achieves significant dimensionality reduction, requiring only 2 POD modes while maintaining
-a relative reconstruction error of approximately 1.3%.
-"""
-content.append(Paragraph("Results", styles["Heading2"]))
-content.append(Paragraph(results, styles["BodyText"]))
-content.append(Spacer(1, 12))
+# Energy table
+data = [["Mode", "Energy", "Cumulative Energy"]]
 
-# Conclusion
-conclusion = """
-The POD-based Reduced Order Model successfully captures the dominant dynamics of the system,
-making it suitable for efficient simulations and real-time applications.
-"""
-content.append(Paragraph("Conclusion", styles["Heading2"]))
-content.append(Paragraph(conclusion, styles["BodyText"]))
+for i in range(len(energy)):
+    data.append([
+        str(i + 1),
+        str(round(float(energy[i]), 6)),
+        str(round(float(cum_energy[i]), 6))
+    ])
+
+table = Table(data)
+
+table.setStyle(TableStyle([
+    ("BACKGROUND", (0,0), (-1,0), colors.grey),
+    ("TEXTCOLOR", (0,0), (-1,0), colors.whitesmoke),
+    ("GRID", (0,0), (-1,-1), 0.5, colors.black),
+    ("ALIGN", (0,0), (-1,-1), "CENTER"),
+]))
+
+content.append(table)
 
 # Build PDF
 doc.build(content)
 
-print("PDF generated: POD_Report.pdf")
+print("PDF generated: POD_ROM_Paper.pdf")

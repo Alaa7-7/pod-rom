@@ -10,6 +10,10 @@ X = heat_2d()
 
 # 2. POD decomposition
 U, S, VT, X_mean = compute_svd(X)
+# Save Singular Values for plotting
+np.savetxt("svd_spectrum.csv", S, delimiter=",")
+
+print("SVD spectrum saved.")
 
 from analysis.energy import compute_energy, cumulative_energy
 
