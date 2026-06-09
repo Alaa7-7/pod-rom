@@ -11,6 +11,21 @@ X = heat_2d()
 # 2. POD decomposition
 U, S, VT, X_mean = compute_svd(X)
 
+from analysis.energy import compute_energy, cumulative_energy
+
+energy = compute_energy(S)
+cum_energy = cumulative_energy(S)
+
+print("\nEnergy Analysis")
+print("----------------")
+
+for i, e in enumerate(energy):
+    print(f"Mode {i+1}: Energy = {e:.4f}")
+
+print("\nCumulative Energy:")
+for i, e in enumerate(cum_energy):
+    print(f"Modes {i+1}: {e:.4f}")
+
 # 3. Energy analysis
 E = compute_energy(S)
 
@@ -59,3 +74,8 @@ np.save("X_original.npy", X)
 np.save("X_reconstructed.npy", X_rec)
 
 print("Data saved: X_original.npy and X_reconstructed.npy")
+
+np.save("energy_modes.npy", energy)
+np.save("energy_cumulative.npy", cum_energy)
+
+print("\nEnergy data saved.")
