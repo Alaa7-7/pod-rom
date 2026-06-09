@@ -42,8 +42,25 @@ X_{ROM} = U_k \Sigma_k V_k^T
 
  Results
 
-- Number of modes used: ~2 (depending on energy threshold)
-- Relative reconstruction error: ~1.3%
+ Results and Discussion
+
+The Reduced Order Model (ROM) was constructed using Proper Orthogonal Decomposition (POD) applied to a 2D heat diffusion system.
+
+ Key findings:
+
+- The snapshot matrix was effectively compressed using Singular Value Decomposition (SVD).
+- Only *2 POD modes* were required to capture *99% of the system energy*.
+- The reduced model achieves a *relative reconstruction error of approximately 1.3%*, demonstrating high accuracy.
+
+ Interpretation:
+
+This indicates that the system dynamics are highly low-rank, meaning that the dominant behavior of the heat diffusion process can be represented in a very low-dimensional subspace.
+
+ Scientific significance:
+
+- Significant reduction in computational complexity
+- Preservation of dominant physical dynamics
+- Demonstrates feasibility of POD-based ROM for real-time simulation
 - Significant dimensionality reduction achieved
 
 
