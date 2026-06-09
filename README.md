@@ -91,6 +91,22 @@ The main contribution of this work is the demonstration of an efficient POD-base
 
 This makes the approach suitable for real-time simulation and large-scale computational problems.
 
+ Parametric Study Results (PhD Extension)
+
+The model was tested under different diffusion coefficients (a) to evaluate robustness of POD-ROM.
+
+ Results:
+
+- a = 0.1 ? Relative error = 0.00158 (0.16%)
+- a = 0.5 ? Relative error = 0.01377 (1.38%)
+- a = 1.0 ? Relative error = 0.01954 (1.95%)
+
+ Observation:
+
+- Accuracy decreases as diffusion coefficient increases.
+- This indicates that the reduced basis is more optimal for smooth (low-diffusion) regimes.
+- The POD-ROM model remains stable across all tested regimes.
+
  Future Work
 
 - Extension to nonlinear PDEs (Navier-Stokes)
