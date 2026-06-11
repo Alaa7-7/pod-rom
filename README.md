@@ -1,4 +1,4 @@
- Reduced Order Modeling (POD-ROM) for 2D Heat Equation
+Reduced Order Modeling (POD-ROM) for 2D Heat Equation
 
 Overview
 
@@ -30,10 +30,10 @@ Physical Model
  dT/dt = alpha * (d2T/dx2 + d2T/dy2)
 
  where:
-- T(x,y,t): temperature field
-- alpha: diffusion coefficient
+ - T(x,y,t): temperature field
+ - alpha: diffusion coefficient
 
- This system is diffusion-dominated, which makes it highly suitable for model reduction techniques.
+  This system is diffusion-dominated, which makes it highly suitable for model reduction techniques.
 
 
 Methodology
@@ -44,14 +44,14 @@ Methodology
  2. Snapshot Matrix
  The solution snapshots are arranged into a matrix:
 
- X = [x1, x2, ..., xn]
+  X = [x1, x2, ..., xn]
 
  3. Singular Value Decomposition (SVD)
- We apply SVD:
+  We apply SVD:
 
- X = U S V^T
+  X = U S V^T
 
- to extract dominant spatial structures.
+  to extract dominant spatial structures.
 
  4. Proper Orthogonal Decomposition (POD)
  The most energetic modes are selected to construct a reduced basis.
@@ -64,25 +64,25 @@ Results
 
 Energy Analysis
 
-- Mode 1: ~97.5% energy
-- Mode 2: ~2.4% energy
-- Remaining modes: negligible
+ - Mode 1: ~97.5% energy
+ - Mode 2: ~2.4% energy
+ - Remaining modes: negligible
 
 
 Key Findings
 
-- Only 2 POD modes capture >99% of the system energy
-- Relative reconstruction error ˜ 1.3%
-- Strong exponential decay of singular values
+ - Only 2 POD modes capture >99% of the system energy
+ - Relative reconstruction error ˜ 1.3%
+ - Strong exponential decay of singular values
 
 Compression Efficiency
 
-The system is reduced from high dimensional space to 2 dominant modes, achieving significant computational reduction.
+ The system is reduced from high dimensional space to 2 dominant modes, achieving significant computational reduction.
 
 
 Scientific Contribution
 
-This work demonstrates the effectiveness of POD for reduced-order modeling of diffusion-dominated systems. The strong energy concentration in the first modes confirms that the system dynamics evolve on a low-dimensional manifold.
+ This work demonstrates the effectiveness of POD for reduced-order modeling of diffusion-dominated systems. The strong energy concentration in the first modes confirms that the system dynamics evolve on a low-dimensional manifold.
 
 
 Applications
