@@ -1,12 +1,12 @@
  Reduced Order Modeling (POD-ROM) for 2D Heat Equation
 
- Overview
+Overview
 
  This project implements a Reduced Order Model (ROM) based on Proper Orthogonal Decomposition (POD) for the numerical approximation of the 2D heat equation.
 
  The main objective is to demonstrate how a high-dimensional dynamical system can be efficiently represented using a low-dimensional basis while preserving the dominant energetic structures.
 
-  Key Features
+Key Features
 
 - Full-order heat solver
 - POD basis construction using SVD
@@ -14,7 +14,8 @@
 - Parametric study with respect to diffusion coefficient (a)
 - Error analysis and reconstruction
 
-  Project Structure
+
+Project Structure
 
 - main.py  full pipeline
 - simulation/  heat solver
@@ -22,7 +23,7 @@
 - analysis/  energy computation
 
 
-  Physical Model
+Physical Model
 
  We consider the 2D heat diffusion equation:
 
@@ -35,7 +36,7 @@
  This system is diffusion-dominated, which makes it highly suitable for model reduction techniques.
 
 
- Methodology
+Methodology
 
  1. Full Order Model (FOM)
  The system is solved numerically to generate snapshot data of the temperature field.
@@ -59,91 +60,87 @@
  The system is projected onto the reduced subspace for efficient reconstruction.
 
 
-  Results
+Results
 
-  Energy Analysis
+Energy Analysis
 
 - Mode 1: ~97.5% energy
 - Mode 2: ~2.4% energy
 - Remaining modes: negligible
 
 
-  Key Findings
+Key Findings
 
 - Only 2 POD modes capture >99% of the system energy
 - Relative reconstruction error ˜ 1.3%
 - Strong exponential decay of singular values
 
- Compression Efficiency
+Compression Efficiency
 
 The system is reduced from high dimensional space to 2 dominant modes, achieving significant computational reduction.
 
 
- Scientific Contribution
+Scientific Contribution
 
 This work demonstrates the effectiveness of POD for reduced-order modeling of diffusion-dominated systems. The strong energy concentration in the first modes confirms that the system dynamics evolve on a low-dimensional manifold.
 
 
- Applications
+Applications
 
-- Computational Fluid Dynamics (CFD)
-- Thermal systems
-- Real-time simulation
-- Control and optimization
-- Scientific machine learning (SciML)
+ - Computational Fluid Dynamics (CFD)
+ - Thermal systems
+ - Real-time simulation
+ - Control and optimization
+ - Scientific machine learning (SciML)
 
- Contribution
+Contribution
 
-The main contribution of this work is the demonstration of an efficient POD-based reduced order model for diffusion-dominated systems, showing that:
+ The main contribution of this work is the demonstration of an efficient POD-based reduced order model for diffusion-dominated systems, showing that:
 
-- The system exhibits strong low-rank behavior
-- A very small number of modes can accurately reconstruct the solution
-- Energy is highly concentrated in the first singular modes
+ - The system exhibits strong low-rank behavior
+ - A very small number of modes can accurately reconstruct the solution
+ - Energy is highly concentrated in the first singular modes
 
-This makes the approach suitable for real-time simulation and large-scale computational problems.
-
- Parametric Study Results (PhD Extension)
-
-The model was tested under different diffusion coefficients (a) to evaluate robustness of POD-ROM.
-
- Results:
-
-- a = 0.1  Relative error = 0.00158 (0.16%)
-- a = 0.5  Relative error = 0.01377 (1.38%)
-- a = 1.0  Relative error = 0.01954 (1.95%)
-
- Observation:
-
-- Accuracy decreases as diffusion coefficient increases.
-- This indicates that the reduced basis is more optimal for smooth (low-diffusion) regimes.
-- The POD-ROM model remains stable across all tested regimes.
-
- Future Work
-
-- Extension to nonlinear PDEs (Navier-Stokes)
-- POD-Galerkin projection
-- Dynamic Mode Decomposition (DMD)
-- Parametric ROM (pROM)
+ This makes the approach suitable for real-time simulation and large-scale computational problems.
 
 
- Files
+Parametric Study Results (PhD Extension)
 
-- main.py - Full pipeline
-- simulation/ - Heat solver
-- pod/ - POD implementation
-- analysis/ - Energy analysis
-- *.csv - exported results
-- *.npy - numerical data
-- POD_ROM_Paper.pdf - generated paper
+ The model was tested under different diffusion coefficients (a) to evaluate robustness of POD-ROM.
+
+Results:
+
+ - a = 0.1  Relative error = 0.00158 (0.16%)
+ - a = 0.5  Relative error = 0.01377 (1.38%)
+ - a = 1.0  Relative error = 0.01954 (1.95%)
+
+Observation:
+
+ - Accuracy decreases as diffusion coefficient increases.
+ - This indicates that the reduced basis is more optimal for smooth (low-diffusion) regimes.
+ - The POD-ROM model remains stable across all tested regimes.
 
 
+Future Work
 
- Author
+ - Extension to nonlinear PDEs (Navier-Stokes)
+ - POD-Galerkin projection
+ - Dynamic Mode Decomposition (DMD)
+ - Parametric ROM (pROM)
 
-Alaa Alomari
+
+Files
+
+ - main.py - Full pipeline
+ - simulation/ - Heat solver
+ - pod/ - POD implementation
+ - analysis/ - Energy analysis
+ - *.csv - exported results
+ - *.npy - numerical data
+ - POD_ROM_Paper.pdf - generated paper
+
+Author
+
+ Alaa Alomari
 
 
-
- License
-
-Academic and research use only.
