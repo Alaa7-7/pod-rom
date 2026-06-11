@@ -16,10 +16,10 @@
 
   Project Structure
 
-- main.py ? full pipeline
-- simulation/ ? heat solver
-- pod/ ? POD and SVD
-- analysis/ ? energy computation
+- main.py  full pipeline
+- simulation/  heat solver
+- pod/  POD and SVD
+- analysis/  energy computation
 
 
   Physical Model
