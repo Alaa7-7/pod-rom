@@ -79,7 +79,6 @@
 The system is reduced from high dimensional space to 2 dominant modes, achieving significant computational reduction.
 
 
-
  Scientific Contribution
 
 This work demonstrates the effectiveness of POD for reduced-order modeling of diffusion-dominated systems. The strong energy concentration in the first modes confirms that the system dynamics evolve on a low-dimensional manifold.
@@ -109,9 +108,9 @@ The model was tested under different diffusion coefficients (a) to evaluate robu
 
  Results:
 
-- a = 0.1 ? Relative error = 0.00158 (0.16%)
-- a = 0.5 ? Relative error = 0.01377 (1.38%)
-- a = 1.0 ? Relative error = 0.01954 (1.95%)
+- a = 0.1  Relative error = 0.00158 (0.16%)
+- a = 0.5  Relative error = 0.01377 (1.38%)
+- a = 1.0  Relative error = 0.01954 (1.95%)
 
  Observation:
 
