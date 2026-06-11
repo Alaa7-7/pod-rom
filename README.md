@@ -1,61 +1,74 @@
  Reduced Order Modeling (POD-ROM) for 2D Heat Equation
 
-Overview
+ Overview
 
-This project implements a Reduced Order Model (ROM) based on Proper Orthogonal Decomposition (POD) for the numerical approximation of the 2D heat equation.
+ This project implements a Reduced Order Model (ROM) based on Proper Orthogonal Decomposition (POD) for the numerical approximation of the 2D heat equation.
 
-The main objective is to demonstrate how a high-dimensional dynamical system can be efficiently represented using a low-dimensional basis while preserving the dominant energetic structures.
+ The main objective is to demonstrate how a high-dimensional dynamical system can be efficiently represented using a low-dimensional basis while preserving the dominant energetic structures.
+
+  Key Features
+
+- Full-order heat solver
+- POD basis construction using SVD
+- Energy-based mode truncation
+- Parametric study with respect to diffusion coefficient (a)
+- Error analysis and reconstruction
+
+  Project Structure
+
+- main.py ? full pipeline
+- simulation/ ? heat solver
+- pod/ ? POD and SVD
+- analysis/ ? energy computation
 
 
+  Physical Model
 
- Physical Model
+ We consider the 2D heat diffusion equation:
 
-We consider the 2D heat diffusion equation:
+ dT/dt = alpha * (d2T/dx2 + d2T/dy2)
 
-dT/dt = alpha * (d2T/dx2 + d2T/dy2)
-
-where:
+ where:
 - T(x,y,t): temperature field
 - alpha: diffusion coefficient
 
-This system is diffusion-dominated, which makes it highly suitable for model reduction techniques.
-
+ This system is diffusion-dominated, which makes it highly suitable for model reduction techniques.
 
 
  Methodology
 
  1. Full Order Model (FOM)
-The system is solved numerically to generate snapshot data of the temperature field.
+ The system is solved numerically to generate snapshot data of the temperature field.
 
  2. Snapshot Matrix
-The solution snapshots are arranged into a matrix:
+ The solution snapshots are arranged into a matrix:
 
-X = [x1, x2, ..., xn]
+ X = [x1, x2, ..., xn]
 
  3. Singular Value Decomposition (SVD)
-We apply SVD:
+ We apply SVD:
 
-X = U S V^T
+ X = U S V^T
 
-to extract dominant spatial structures.
+ to extract dominant spatial structures.
 
  4. Proper Orthogonal Decomposition (POD)
-The most energetic modes are selected to construct a reduced basis.
+ The most energetic modes are selected to construct a reduced basis.
 
  5. Reduced Order Model (ROM)
-The system is projected onto the reduced subspace for efficient reconstruction.
+ The system is projected onto the reduced subspace for efficient reconstruction.
 
 
+  Results
 
- Results
-
- Energy Analysis
+  Energy Analysis
 
 - Mode 1: ~97.5% energy
 - Mode 2: ~2.4% energy
 - Remaining modes: negligible
 
- Key Findings
+
+  Key Findings
 
 - Only 2 POD modes capture >99% of the system energy
 - Relative reconstruction error ˜ 1.3%
@@ -70,7 +83,6 @@ The system is reduced from high dimensional space to 2 dominant modes, achieving
  Scientific Contribution
 
 This work demonstrates the effectiveness of POD for reduced-order modeling of diffusion-dominated systems. The strong energy concentration in the first modes confirms that the system dynamics evolve on a low-dimensional manifold.
-
 
 
  Applications
@@ -115,16 +127,15 @@ The model was tested under different diffusion coefficients (a) to evaluate robu
 - Parametric ROM (pROM)
 
 
-
  Files
 
-- main.py ? Full pipeline
-- simulation/ ? Heat solver
-- pod/ ? POD implementation
-- analysis/ ? Energy analysis
-- *.csv ? exported results
-- *.npy ? numerical data
-- POD_ROM_Paper.pdf ? generated paper
+- main.py - Full pipeline
+- simulation/ - Heat solver
+- pod/ - POD implementation
+- analysis/ - Energy analysis
+- *.csv - exported results
+- *.npy - numerical data
+- POD_ROM_Paper.pdf - generated paper
 
 
 
