@@ -37,23 +37,23 @@ The snapshots are stored in a matrix X.
 
 We decompose the snapshot matrix as:
 
-X = U S V?
+X = U S V^T
 
 Where:
 
 - *X*: Snapshot matrix (data from the simulation)
 - *U*: Spatial modes (POD modes)  
-  ? They represent the main spatial patterns of the system
+   They represent the main spatial patterns of the system
 - *S (Sigma)*: Diagonal matrix of singular values  
-  ? It represents the energy or importance of each mode
-- *V?*: Temporal coefficients  
-  ? It shows how each mode evolves over time
+   It represents the energy or importance of each mode
+- *V^T*: Temporal coefficients  
+   It shows how each mode evolves over time
 
 ## Simple Interpretation
 
-- U ? shapes of the solution (spatial structure)
-- S ? importance of each shape (energy)
-- V? ? evolution of these shapes over time
+- U  shapes of the solution (spatial structure)
+- S  importance of each shape (energy)
+- VT evolution of these shapes over time
 
 to extract dominant patterns.
 
@@ -80,9 +80,9 @@ We reconstruct the solution using a small number of modes.
 
 We tested different values of a:
 
-- a = 0.1 ? error = 0.00158
-- a = 0.5 ? error = 0.01377
-- a = 1.0 ? error = 0.01954
+- a = 0.1 ( error = 0.00158 )
+- a = 0.5 ( error = 0.01377 )
+- a = 1.0 ( error = 0.01954 )
 
 ### Observation:
 
@@ -91,12 +91,12 @@ We tested different values of a:
 
 ## Files
 
-- main.py ? full simulation pipeline
-- simulation/ ? heat equation solver
-- pod/ ? POD and SVD functions
-- analysis/ ? energy calculations
-- *.npy / *.csv ? saved results
-- POD_ROM_Paper.pdf ? generated report
+- main.py \ - full simulation pipeline
+- simulation/ - heat equation solver
+- pod/ - POD and SVD functions
+- analysis/ - energy calculations
+- *.npy / *.csv -  saved results
+- POD_ROM_Paper.pdf -  generated report
 
 ## Conclusion
 
