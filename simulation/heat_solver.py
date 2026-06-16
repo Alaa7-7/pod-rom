@@ -1,28 +1,28 @@
 import numpy as np
 
-def heat_2d(nx=40, ny=40, nt=100, alpha=0.01):
+def heat_2d(alpha=1.0):
+    nx, ny = 50, 50
+    T = np.zeros((nx, ny))
 
-    u = np.zeros((nx, ny))
-    u[nx//2, ny//2] = 1.0
+    # initial condition
+    T[20:30, 20:30] = 1.0
 
     snapshots = []
 
-    for t in range(nt):
-
-        u_new = u.copy()
+    for t in range(100):
+        T_new = T.copy()
 
         for i in range(1, nx-1):
             for j in range(1, ny-1):
-
-                u_new[i, j] = u[i, j] + alpha * (
-                    u[i+1, j] + u[i-1, j] +
-                    u[i, j+1] + u[i, j-1] -
-                    4 * u[i, j]
+                lap = (
+                    T[i+1,j] + T[i-1,j] +
+                    T[i,j+1] + T[i,j-1] -
+                    4*T[i,j]
                 )
 
-        u = u_new
+                T_new[i,j] = T[i,j] + alpha * 0.1 * lap
 
-        if t % 5 == 0:
-            snapshots.append(u.flatten())
+        T = T_new
+        snapshots.append(T.flatten())
 
     return np.array(snapshots).T
