@@ -3,47 +3,79 @@ from pod.svd import compute_svd, reconstruct
 from analysis.energy import compute_energy, cumulative_energy
 import numpy as np
 
-alphas = [0.1, 0.5, 1.0]
 
-print("Parametric POD-ROM Study")
-print("------------------------")
+# Training parameters
+training_alphas = [0.1, 0.5, 1.0]
 
-for alpha in alphas:
+# Unseen test parameter
+test_alpha = 0.75
 
-    # 1. Generate data (FOM)
+print("Parametric POD Study")
+print("--------------------")
+
+# 1. Generate training snapshots
+training_snapshots = []
+
+for alpha in training_alphas:
     X = heat_2d(alpha=alpha)
+    training_snapshots.append(X)
 
-    # 2. SVD
-    U, S, VT, X_mean = compute_svd(X)
+# Combine all training snapshots
+X_train = np.hstack(training_snapshots)
 
-    # 3. Energy analysis
-    energy = compute_energy(S)
-    cum_energy = cumulative_energy(S)
+# 2. Compute one common POD basis
+U, S, VT, X_mean = compute_svd(X_train)
 
-    # 4. Choose k automatically (99% energy)
-    k = np.argmax(cum_energy >= 0.99) + 1
+# 3. Energy analysis
+energy = compute_energy(S)
+cum_energy = cumulative_energy(S)
 
-    # 5. Reconstruction
-    X_rec = reconstruct(U, S, VT, k, X_mean)
+# Choose number of modes for 99% energy
+k = np.argmax(cum_energy >= 0.99) + 1
 
-    # 6. Error
-    error = np.linalg.norm(X - X_rec) / np.linalg.norm(X)
+print("Training alphas =", training_alphas)
+print("Test alpha =", test_alpha)
+print("Number of POD modes =", k)
+print("Cumulative energy =", cum_energy[k - 1])
 
-    # 7. Full reconstruction check (important validation)
-    X_full = reconstruct(U, S, VT, len(S), X_mean)
-    full_error = np.linalg.norm(X - X_full)
+# 4. Generate FOM solution for unseen parameter
+X_test = heat_2d(alpha=test_alpha)
 
-    # ---------------- PRINT RESULTS ----------------
-    print("\n===================================")
-    print("alpha =", alpha)
+# 5. Reconstruct test solution using the common POD basis
 
-    print("Singular values (first 5):", S[:5])
-    print("Energy sum =", np.sum(energy))
-    print("Cumulative last =", cum_energy[-1])
-    print("k for 99% energy =", k)
+X_test_centered = X_test - X_mean
 
-    print("Relative error =", error)
-    print("Full reconstruction error =", full_error)
+U_k = U[:, :k]
+X_test_rec = U_k @ (U_k.T @ X_test_centered) + X_mean
 
-    print("S decreasing =", np.all(np.diff(S) <= 0))
-    print("===================================\n")
+# 6. Calculate test error
+error = np.linalg.norm(X_test - X_test_rec) / np.linalg.norm(X_test)
+
+print("Test relative error =", error)
+
+# 7. Basic POD checks
+print("Energy sum =", np.sum(energy))
+print("Singular values decreasing =", np.all(np.diff(S) <= 0))
+
+# Save new results
+np.savetxt(
+    "results/test_result.csv",
+    [[test_alpha, k, cum_energy[k - 1], error]],
+    delimiter=",",
+    header="test_alpha,modes,cumulative_energy,test_error",
+    comments=""
+)
+
+np.savetxt(
+    "results/energy_modes.csv",
+    energy,
+    delimiter=","
+)
+
+np.savetxt(
+    "results/energy_cumulative.csv",
+    cum_energy,
+    delimiter=","
+)
+
+print("New results saved in results/")

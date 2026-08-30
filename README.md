@@ -1,107 +1,312 @@
-# Reduced Order Modeling (POD-ROM) for 2D Heat Equation
+### Reduced Order Modeling (POD) for 2D Heat Equation
 
 ## Overview
 
-This project work a simple Reduced Order Model (ROM) using Proper Orthogonal Decomposition (POD) for solving the 2D heat equation.
+In this project, I solve a simple 2D heat equation using Python.
 
-The main idea is to reduce the size of the system while keeping the most important information from the solution.
+I first use a finite difference method to calculate the temperature over time.
 
-## Keys
+Then I use POD (Proper Orthogonal Decomposition) and SVD (Singular Value Decomposition) to reduce the amount of data.
 
-- 2D heat equation solver (finite difference)
-- POD basis construction using SVD
-- Energy-based mode selection
-- Reconstruction of the solution using few modes
-- Parametric study for different diffusion values (a)
-- Error calculation between full and reduced models
+The main idea is to see if a small number of POD modes can represent the main temperature behavior.
 
-## Physical Model
+--------------------------------------------------------------------------------------------------
 
-We solve the 2D heat equation:
+```
+The project contains:
 
-dT/dt = a (d²T/dx² + d²T/dy²)
+- 2D heat equation solver
+- Finite difference method
+- POD using SVD
+- Energy calculation
+- Training with different diffusion values
+- Testing with a new diffusion value
+- Reconstruction error calculation
+``` 
 
-Where:
-- T(x,y,t): temperature field
-- a: diffusion coefficient
+-------------------------------------------------------------------------------------------
 
-## Method
+## 1. Heat Equation
 
-### 1. Full Model
-We simulate the heat equation to generate snapshots of the solution over time.
+```
+I use the following 2D heat equation:
 
-### 2. Snapshot Matrix
-The snapshots are stored in a matrix X.
-
-## 3. Singular Value Decomposition (SVD)
-
-We decompose the snapshot matrix as:
-
-X = U S V^T
+dT/dt = alpha * (d2T/dx2 + d2T/dy2)
 
 Where:
 
-- *X*: Snapshot matrix (data from the simulation)
-- *U*: Spatial modes (POD modes)  
-   They represent the main spatial patterns of the system
-- *S (Sigma)*: Diagonal matrix of singular values  
-   It represents the energy or importance of each mode
-- *V^T*: Temporal coefficients  
-   It shows how each mode evolves over time
+- "T" = temperature
+- "t" = time
+- "x" = x direction
+- "y" = y direction
+- "alpha" = diffusion coefficient
+```
 
-## Simple Interpretation
+----------------------------------------------------------------------------------------------------------
 
-- U  shapes of the solution (spatial structure)
-- S  importance of each shape (energy)
-- VT evolution of these shapes over time
 
-to extract dominant patterns.
+## 2. Numerical Method
 
-### 4. POD Modes
-We keep only the most important modes based on energy.
+I use an explicit finite difference method.
 
-### 5. Reconstruction
-We reconstruct the solution using a small number of modes.
+```
+The second derivative in the x direction is approximated by:
 
-## Results
+d2T/dx2 =
+(T[i+1,j] - 2*T[i,j] + T[i-1,j]) / dx^2
 
-### Energy
+The second derivative in the y direction is:
 
-- Mode 1 ˜ 93%
-- Mode 2 ˜ 6%
-- Others are very small
+d2T/dy2 =
+(T[i,j+1] - 2*T[i,j] + T[i,j-1]) / dy^2
 
-### Main Observation
+Then I update the temperature using:
 
-- Only 2 modes are enough to capture more than 99% of the energy
-- The model works well with very small error
+T_new[i,j] =
+T[i,j] + alpha * dt * (d2T/dx2 + d2T/dy2)
 
-## Parametric Study
+This is the main numerical formula used in "heat_solver.py".
+```
 
-We tested different values of a:
+------------------------------------------------------------------------------------------
 
-- a = 0.1 ( error = 0.00158 )
-- a = 0.5 ( error = 0.01377 )
-- a = 1.0 ( error = 0.01954 )
 
-### Observation:
+## 3. Numerical Settings
 
-- When a increases, the error increases slightly
-- The reduced model still gives good results
+```
+I use a 50 x 50 grid.
 
-## Files
+The numerical settings are:
 
-- main.py \ - full simulation pipeline
-- simulation/ - heat equation solver
-- pod/ - POD and SVD functions
-- analysis/ - energy calculations
-- *.npy / *.csv -  saved results
-- POD_ROM_Paper.pdf -  generated report
+dx = 1.0
+dy = 1.0
+dt = 0.1
+
+Here:
+
+- "dx" is the distance between grid points in the x direction.
+- "dy" is the distance between grid points in the y direction.
+- "dt" is the time step.
+
+The simulation uses 100 time steps.
+
+The boundary temperature stays at zero during the simulation.
+```
+--------------------------------------------------------------------------------------------
+
+
+## 4. Initial Condition
+
+```
+The temperature starts at zero everywhere:
+
+T = 0
+
+I then put a hot square in the middle of the grid:
+
+T[20:30, 20:30] = 1.0
+
+So the middle part has temperature 1.0 and the rest of the grid starts at 0.0.
+
+5. Training Data
+
+I use three diffusion values for training:
+
+alpha = 0.1
+alpha = 0.5
+alpha = 1.0
+
+For each value, I generate temperature snapshots.
+
+I then combine all training snapshots into one matrix.
+
+This matrix is used to build one common POD basis.
+```
+
+-----------------------------------------------------------------------------------------------
+
+
+
+## 6. POD and SVD
+
+I use SVD to find the main patterns in the training data.
+
+```
+The SVD is:
+
+X = U * S * V^T
+
+Where:
+
+- "X" = snapshot matrix
+- "U" = POD spatial modes
+- "S" = singular values
+- "V^T" = time information
+
+I subtract the mean temperature before calculating the SVD.
+```
+
+----------------------------------------------------------------------------------------------------
+
+
+## 7. Energy
+
+```
+I calculate the energy of each singular value using:
+
+energy[i] = S[i]^2 / sum(S[j]^2)
+
+Then I calculate the cumulative energy:
+
+cumulative_energy(k) =
+energy[1] + energy[2] + ... + energy[k]
+
+I choose the number of POD modes needed to keep at least 99% of the training energy.
+
+For my results, I need:
+
+3 POD modes
+
+The first 3 modes contain about:
+
+99.93% of the training energy
+```
+
+-----------------------------------------------------------------------------------------
+
+
+## 8. Test Parameter
+
+After building the POD basis, I test it using a new parameter that was not used during training.
+
+```
+The test parameter is:
+
+alpha = 0.75
+
+Training parameters:
+
+0.1, 0.5, 1.0
+
+Test parameter:
+
+0.75
+
+This allows me to check if the common POD basis can represent a new parameter.
+```
+
+--------------------------------------------------------------------------------------------
+
+
+## 9. Approximation
+
+```
+I first calculate the full solution for:
+
+alpha = 0.75
+
+Then I project the test solution onto the first 3 POD modes.
+
+The Approximation is calculated using:
+
+X_test_centered = X_test - X_mean
+
+X_test_rec =
+U_k * (U_k^T * X_test_centered) + X_mean
+
+where "U_k" contains the first 3 POD modes.
+```
+
+----------------------------------------------------------------------
+
+
+## 10. Error
+
+I calculate the relative approximation error using:
+
+```
+Relative Error =
+||X_test - X_test_rec|| / ||X_test||
+
+For the unseen test parameter, I obtained:
+
+Test relative error = 0.0068056
+
+This is approximately: 0.68%
+```
+
+-----------------------------------------------------------------------------------------------------
+
+
+## 11. Results
+
+```
+My final results are:
+
+Training parameters = [0.1, 0.5, 1.0]
+
+Test parameter = 0.75
+
+Number of POD modes = 3
+
+Training energy = 99.93%
+
+Test relative error = 0.68%
+
+Energy sum = approximately 1.0
+
+Singular values decreasing = True
+
+The results show that the common POD basis can represent the unseen test parameter with a small approximation error.
+```
+
+------------------------------------------------------------------------------------------------
+
+
+## 12. Files
+
+```
+main.py
+
+Runs the main POD study.
+
+simulation/
+
+Contains the heat equation solver.
+
+pod/
+
+Contains the POD and SVD functions.
+
+analysis/
+
+Contains the energy calculations.
+
+figures/
+
+Contains project figures.
+
+results/
+
+Contains saved results.
+```
+
+------------------------------------------------------------------------------------------------------
+
+
 
 ## Conclusion
 
-This project shows that POD can reduce the size of the heat equation model while keeping good accuracy using only a few modes.
+```
+In this project, I solve the 2D heat equation using a simple finite difference method.
 
-## Author
+I use three parameter values for training and build one common POD basis.
 
-Alaa
+Then I test the basis using the unseen value "alpha = 0.75".
+
+I need 3 POD modes to keep about 99.93% of the training energy.
+
+The reconstruction error for the unseen test parameter is about 0.68%.
+
+This shows that POD can reduce the amount of information while still giving a good approximation of the heat solution.
+```
