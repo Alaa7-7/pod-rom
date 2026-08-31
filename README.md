@@ -281,6 +281,10 @@ Contains the POD and SVD functions.
 analysis/
 
 Contains the energy calculations.
+
+results/
+
+Contains saved results.
 ```
 
 ------------------------------------------------------------------------------------------------------
