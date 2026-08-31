@@ -192,13 +192,13 @@ Test parameter:
 
 0.75
 
-This allows me to check if the common POD basis can represent a new parameter.
+This allows me to check if the common POD basis can approximate the solution for a new parameter.
 ```
 
 --------------------------------------------------------------------------------------------
 
 
-## 9. Approximation
+## 9. Test Approximation
 
 ```
 I first calculate the full solution for:
@@ -281,14 +281,6 @@ Contains the POD and SVD functions.
 analysis/
 
 Contains the energy calculations.
-
-figures/
-
-Contains project figures.
-
-results/
-
-Contains saved results.
 ```
 
 ------------------------------------------------------------------------------------------------------
